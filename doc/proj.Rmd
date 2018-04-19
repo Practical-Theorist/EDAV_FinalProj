@@ -18,27 +18,64 @@ The variables include
 
 3. Graphical Analysis of Data Quality
 
-4. Main Analysis (focus on quality of EDA choices / techniques)
-
-
-5. Executive Summary (focus on quality of presentation choices / techniques)
-
-
-6. Interactive Component 
-
-7. Conclusion
 
 ```{r}
 
 library(openxlsx)
 terrorism <- read.xlsx("raw data/globalterrorismdb_0617dist.xlsx")
 
-terroism1<-terrorism[terrorism$iyear<=1974,]
+terrorism1<-terrorism[terrorism$iyear<=1974,]
 
-write.csv(terroism1,"terrorism1.csv")
+write.csv(terrorism1,"terrorism1.csv")
 
 terrorism2<-terrorism[terrorism$iyear>=2012,]
 
 write.csv(terrorism2,"terrorism2.csv")
 ```
 
+
+2. Graphical Analysis of Data Quality
+
+## discover what's in the data file that was exported
+```{r}
+
+## choose variables
+
+head(terrorism1)
+head(terrorism2)
+summary(terrorism1)
+summary(terrorism2)
+```
+
+## imputations for NULL values 
+```{r}
+
+```
+
+
+##Outlier Analysis and Treatment
+```{r}
+
+```
+
+4. Main Analysis (focus on quality of EDA choices / techniques)
+
+countries with the most attack, 1970-1974; 2011-2016
+Terrorist Attack Tactics Wordwide, 1970-1974; 2011-2016
+Terrorist Attack By Weapon Wordwide, 1970-1974; 2011-2016
+Casualties, 1970-1974; 2011-2016
+Terrorist Groups with the most Attacks Wordwide, 1970-1974; 2011-2016
+Terrorist Attack Targets/Victims , 1970-1974; 2011-2016
+Which countries/cities were the most dangerous in  1970-1974 and 2011-2016
+Terrorist Attacks in XXX by Year in1970-1974 and 2011-2016
+A heatmap of terrorist attack deaths worldwide in1970-1974 and 2011-2016
+```{r}
+
+```
+
+
+5. Executive Summary (focus on quality of presentation choices / techniques)
+
+6. Interactive Component 
+
+7. Conclusion

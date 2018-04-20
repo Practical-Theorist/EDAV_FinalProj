@@ -164,25 +164,6 @@ The diversity of terrorist attack targets is higher in 2016 than in 1970. The bi
 For the top 10 terrorist attack targets, they require the most homeland security resources. Policymakers can use these and other results to focus their counter-terrorism measures.
 
 
-## Which regions were the most dangerous in  1970-1974 and 2011-2016
-
-Since we have already explored terrorist attack methods and targets in previous analyzation, we also want to know which regions have been targetted the most. 
-```{r}
-#1970-1974
-region_1970_1974 <- terrorism1 %>% group_by(region_txt) %>% summarise(n=n())
-p1<-ggplot(aes(x=reorder(region_txt, n), y=n), data=region_1970_1974) + geom_bar(stat = 'identity') + xlab('Region') + ylab('Number of Terrorist Attacks From 1970 To 1974') + ggtitle('Terrorist Attacks Region From 1970 to 1974') + coord_flip()
-
-#2012-2016
-region_2012_2016 <- terrorism2 %>% group_by(region_txt) %>% summarise(n=n())
-p2<-ggplot(aes(x=reorder(region_txt, n), y=n), data=region_2012_2016) + geom_bar(stat = 'identity') + xlab('Region') + ylab('Number of Terrorist Attacks From 2011 To 2016') + ggtitle('Terrorist Attacks Region From 2012 to 2016') + coord_flip()
-
-grid.arrange(p1, p2, nrow = 2)
-
-```
-
-The region of terrorist attacks has also changed a lot in the past decades. During 1970-1974, the region with most terrorist attacks was Western Europe, followed by North America, South America, Middle East & North Afica etc,. While during 2012-2016, Middle East & North Afica has become the region with most number of terrorist attacks, followed by South Asia, Sub-Saharan African, Southeast Asia etc,. The change may cause by the unstable political or other situation in the Middle East and North Afica region and the dramatic change in the world pattern in the past 30 years.
-
-
 ## Which cities were the most dangerous in  1970-1974 and 2012-2016
 
 Then, we want to explore deeper to see the difference in the most dangerous cities in 1970-1974 and 2012-2016.  They ranked among the world's most dangerous places on the basis of total number of terrorism attacks.
@@ -212,6 +193,26 @@ grid.arrange(p1, p2, nrow = 2)
 The most dangeours countries are very different in these two periods. During 1970-1974, the most dangerous countries are in United Kingdom, United States, Argentina, Uruguay and Turkey. Belfast was the most dangerous city in 1970-1974, with approximately 400 terrorist attacks in all.
 
 During 2012-2016, the most dangerous countries are in Iraq, Pakistan, Somalia, Afghanistan, Libya and Yemen. Baghdad was the most dangerous city in 2012-2016, with approximately 4000 terrorist attacks in all. In addition, the total number of attacks increased rapidly, which may be caused by wars and other political issues.
+
+
+## Which regions were the most dangerous in  1970-1974 and 2011-2016
+
+Since we have already explored terrorist attack methods and targets in previous analyzation, we also want to know which regions have been targetted the most. 
+```{r}
+#1970-1974
+region_1970_1974 <- terrorism1 %>% group_by(region_txt) %>% summarise(n=n())
+p1<-ggplot(aes(x=reorder(region_txt, n), y=n), data=region_1970_1974) + geom_bar(stat = 'identity') + xlab('Region') + ylab('Number of Terrorist Attacks From 1970 To 1974') + ggtitle('Terrorist Attacks Region From 1970 to 1974') + coord_flip()
+
+#2012-2016
+region_2012_2016 <- terrorism2 %>% group_by(region_txt) %>% summarise(n=n())
+p2<-ggplot(aes(x=reorder(region_txt, n), y=n), data=region_2012_2016) + geom_bar(stat = 'identity') + xlab('Region') + ylab('Number of Terrorist Attacks From 2011 To 2016') + ggtitle('Terrorist Attacks Region From 2012 to 2016') + coord_flip()
+
+grid.arrange(p1, p2, nrow = 2)
+
+```
+
+The region of terrorist attacks has also changed a lot in the past decades. During 1970-1974, the region with most terrorist attacks was Western Europe, followed by North America, South America, Middle East & North Afica etc,. While during 2012-2016, Middle East & North Afica has become the region with most number of terrorist attacks, followed by South Asia, Sub-Saharan African, Southeast Asia etc,. The change may cause by the unstable political or other situation in the Middle East and North Afica region and the dramatic change in the world pattern in the past 30 years.
+
 
 ## Terrorist Attacks distribution by Region and Year 1970-1974 & 2012-2016
 

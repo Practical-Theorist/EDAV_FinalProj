@@ -209,9 +209,9 @@ p2<-ggplot(data=top10_city, aes(x=reorder(city,-n), y=n, group=1)) +
 grid.arrange(p1, p2, nrow = 2)
 ```
 
-The most dangeours cities are very different in these two periods. During 1970-1974, the most dangerous cities are in United Kingdom, United States, Argentina, Uruguay and Turkey. Belfast was the most dangerous city in 1970-1974, with approximately 400 terrorist attacks in all.
+The most dangeours countries are very different in these two periods. During 1970-1974, the most dangerous countries are in United Kingdom, United States, Argentina, Uruguay and Turkey. Belfast was the most dangerous city in 1970-1974, with approximately 400 terrorist attacks in all.
 
-During 2012-2016, the most dangerous cities are in Iraq, Pakistan, Somalia, Afghanistan, Libya and Yemen. Baghdad was the most dangerous city in 2012-2016, with approximately 4000 terrorist attacks in all. In addition, the total number of attacks increased rapidly, which may be caused by wars and other political issues.
+During 2012-2016, the most dangerous countries are in Iraq, Pakistan, Somalia, Afghanistan, Libya and Yemen. Baghdad was the most dangerous city in 2012-2016, with approximately 4000 terrorist attacks in all. In addition, the total number of attacks increased rapidly, which may be caused by wars and other political issues.
 
 ## Terrorist Attacks distribution by Region and Year 1970-1974 & 2012-2016
 

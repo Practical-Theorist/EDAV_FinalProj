@@ -249,7 +249,6 @@ ggplot(n_NAMENA, aes(x = iyear, y = n, fill = region_txt)) +
   theme(legend.position = "none") +
 ggtitle("Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 1970-1974")
 ```
-## Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 2012-2016
 
 And this is the comparison during the period of 2012-2016.
 ```{r fig.height=4, fig.width=11}

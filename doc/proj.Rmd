@@ -21,11 +21,17 @@ For the dataset from 1970-1974, there are 2670 observations of 135 variables. Fo
 
 The variables include
 
+```{r}
+library(openxlsx)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(rworldmap)
+```
+
 # Graphical Analysis of Data Quality
 
 ```{r}
-
-library(openxlsx)
 
 terrorism <- read.xlsx("/Users/xiangyu/Documents/GitHub/EDAV_FinalProj/data/raw data/globalterrorismdb_0617dist.xlsx")
 
@@ -44,10 +50,6 @@ write.csv(terrorism2,"terrorism2.csv")
 
 ## choose variables
 
-head(terrorism1)
-head(terrorism2)
-summary(terrorism1)
-summary(terrorism2)
 ```
 
 ## imputations for NULL values 
@@ -63,10 +65,12 @@ summary(terrorism2)
 
 # Main Analysis (focus on quality of EDA choices / techniques)
 
+
 ## countries with the most attack, 1970-1974; 2011-2016
 ```{r}
 
 ```
+
 
 ## Terrorist Attack Tactics Wordwide, 1970-1974; 2011-2016
 ```{r}
@@ -83,20 +87,110 @@ summary(terrorism2)
 
 ```
 
-## Terrorist Groups with the most Attacks Wordwide, 1970-1974; 2011-2016
+
+## Terrorist Attack Targets in 1970 and 2016
+
+There are a lot of different terrorist attack targets in our dataset, such as Government, Military, Education Institutions and so on. We would like to compare the top 10 terrorist attack targets in the first 1970 and the last year 2016 in our dataset. The variation in terrorist attack targets may be related to the policy issues, motivations and religions, etc.
+
+```{r,fig.height=5,fig.width=10, fig.align='center'}
+library(gridExtra)
+attack1970 <- terrorism[terrorism$iyear==1970, ]
+by_target <- attack1970 %>% group_by(targtype1_txt) %>% 
+  summarise(n=n())
+by_target <- arrange(by_target, desc(n))%>% head(10)
+
+p1<-ggplot(aes(x=reorder(targtype1_txt, n), y=n), data=by_target) +
+  geom_bar(stat = 'identity') + ggtitle('Attack Targets, 1970') +
+  coord_flip() + theme_fivethirtyeight()
+
+attack2016 <- terrorism[terrorism$iyear==2016, ]
+by_target <- attack2016 %>% group_by(targtype1_txt) %>% 
+  summarise(n=n())
+by_target <- arrange(by_target, desc(n))%>% head(10)
+
+p2<-ggplot(aes(x=reorder(targtype1_txt, n), y=n), data=by_target) +
+  geom_bar(stat = 'identity') + ggtitle('Attack Targets, 2016') +
+  coord_flip() + theme_fivethirtyeight()
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+The diversity of terrorist attack targets is higher in 2016 than in 1970. The biggest difference is that private citizens and properties become the highest terrorist attack targets in 2016, which does not even appear among the top 10 terrorist attack targets in 1970. This may because the personal hatred is developing rapidly among these years.
+
+For the top 10 terrorist attack targets, they require the most homeland security resources. Policymakers can use these and other results to focus their counter-terrorism measures.
+
+## A heatmap of total number of terrorist attacks worldwide 
+
+To compare the total number of terrorist attacks worldwide, we draw the following two heatmaps. 
 ```{r}
+
+a <- rle(sort(terrorism1$country_txt))
+b <- data.frame(country_txt=a$values, number_of_torrorism_attacks_from_1970_to_1974 = a$lengths)
+
+gtdMap <- joinCountryData2Map( b, 
+                               nameJoinColumn="country_txt", 
+                               joinCode="NAME" )
+
+#mapDevice('x11')
+mapCountryData( gtdMap, 
+                nameColumnToPlot='number_of_torrorism_attacks_from_1970_to_1974', 
+                catMethod='fixedWidth', 
+                numCats=100 )
 
 ```
 
-## Terrorist Attack Targets/Victims , 1970-1974; 2011-2016
 ```{r}
+a <- rle(sort(terrorism2$country_txt))
+b <- data.frame(country_txt=a$values, number_of_torrorism_attacks_from_2012_to_2016 = a$lengths)
 
+gtdMap <- joinCountryData2Map( b, 
+                               nameJoinColumn="country_txt", 
+                               joinCode="NAME" )
+
+#mapDevice('x11')
+mapCountryData( gtdMap, 
+                nameColumnToPlot='number_of_torrorism_attacks_from_2012_to_2016', 
+                catMethod='fixedWidth', 
+                numCats=100 )
 ```
 
-## Which countries/cities were the most dangerous in  1970-1974 and 2011-2016
-```{r}
 
+## Which cities were the most dangerous in  1970-1974 and 2011-2016
+
+Then, we want to explore deeper to see the difference in the most dangerous cities in 1970-1974 and 2011-2016.  They ranked among the world’s most dangerous places on the basis of total number of terrorism attacks.
+
+```{r,fig.height=6,fig.width=9, fig.align='center'}
+attack_by_city <- terrorism1 %>% group_by(country_txt, city) %>% 
+  summarise(n=n())
+attack_by_city <- arrange(attack_by_city, desc(n))
+top10_city<- head(attack_by_city, 10)
+
+p1<-ggplot(data=top10_city, aes(x=reorder(city,-n), y=n, group=1)) +
+  geom_line()+
+  geom_point() + xlab("City") + ylab("Number of terrorist Attacks") +
+        ggtitle("Top 10 dangerous city by Year 1970-1974") + theme_fivethirtyeight()
+
+attack_by_city <- terrorism2 %>% group_by(country_txt, city) %>% 
+  summarise(n=n())
+attack_by_city <- arrange(attack_by_city, desc(n))
+top10_city<- head(attack_by_city, 10)
+
+p2<-ggplot(data=top10_city, aes(x=reorder(city,-n), y=n, group=1)) +
+  geom_line()+
+  geom_point() + xlab("City") + ylab("Number of terrorist Attacks") +
+        ggtitle("Top 10 dangerous city by Year 2012-2016") + theme_fivethirtyeight()
+grid.arrange(p1, p2, nrow = 2)
 ```
+
+The most dangeours cities are very different in these two periods. During 1970-1974, the most dangerous cities are in United Kingdom, United States, Argentina, Uruguay and Turkey. Belfast was the most dangerous city in 1970-1974, with approximately 400 terrorist attacks in all.
+
+During 2012-2016, the most dangerous cities are in Iraq, Pakistan, Somalia, Afghanistan, Libya and Yemen. Baghdad was the most dangerous city in 2012-2016, with approximately 4000 terrorist attacks in all. In addition, the total number of attacks increased rapidly, which may be caused by wars and other political issues.
+
+
+
+
+
+
 
 ## Terrorist Attacks in XXX by Year in1970-1974 and 2011-2016
 ```{r}

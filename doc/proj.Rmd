@@ -62,21 +62,49 @@ terrorism2<-terrorism[terrorism$iyear>=2012,]
 # Main Analysis (focus on quality of EDA choices / techniques)
 
 
-## countries with the most attack, 1970-1974; 2011-2016
+## world terrorist attack trend, 1970-1974; 2011-2016
 ```{r}
+#attack trends 1970-1974
+year_1970_1974 <- terrorism1 %>% group_by(iyear) %>% summarise(n=n())
+ggplot(aes(x = iyear, y = n), data = year_1970_1974) + geom_line() + xlab("Year") + ylab("terrorist Attacks Number") + ggtitle("Global Terrorist Attacks From 1970 To 1974") 
+
+#attack trends 2011-2016
+year_2011_2016 <- terrorism2 %>% group_by(iyear) %>% summarise(n=n())
+ggplot(aes(x = iyear, y = n), data = year_2011_2016) + geom_line() + xlab("Year") + ylab("terrorist Attacks Number") + ggtitle("Global Terrorist Attacks From 2011 To 2016") 
 
 ```
+From the plot above, although the trends are different between these two periods, there has been a noticable increase on terrorist attacks number during the recent years compared with the 70s. During 2011-2016, the maximum number of attacks was around 17000, and the minimum numbre of attacks was around 8500. While during 1970-1974, the maximum number was only 650. This indicates that there have been more unstable factors around the globe in recent years and the world has been more dangerous now than in the 70s. 
+
+
+## regions with the most attack, 1970-1974; 2011-2016
+```{r}
+#1970-1974
+region_1970_1974 <- terrorism1 %>% group_by(region_txt) %>% summarise(n=n())
+ggplot(aes(x=reorder(region_txt, n), y=n), data=region_1970_1974) + geom_bar(stat = 'identity') + xlab('Region') + ylab('Number of Terrorist Attacks From 1970 To 1974') + ggtitle('Terrorist Attacks Region From 1970 to 1974') + coord_flip()
+
+#2011-2016
+region_2011_2016 <- terrorism2 %>% group_by(region_txt) %>% summarise(n=n())
+ggplot(aes(x=reorder(region_txt, n), y=n), data=region_2011_2016) + geom_bar(stat = 'identity') + xlab('Region') + ylab('Number of Terrorist Attacks From 2011 To 2016') + ggtitle('Terrorist Attacks Region From 2011 to 2016') + coord_flip()
+
+```
+The region of terrorist attacks has also changed a lot in the past decades. During 1970-1974, the region with most terrorist attacks was Western Europe, followed by North America, South America, Middle East & North Afica etc,. While during 2011-2016, Middle East & North Afica has become the region with most number of terrorist attacks, followed by South Asia, Sub-Saharan African, Southeast Asia etc,. The change may cause by the unstable political or other situation in the Middle East and North Afica region and the dramatic change in the world pattern in the past 30 years.
 
 
 ## Terrorist Attack Tactics Wordwide, 1970-1974; 2011-2016
 ```{r}
+#1970-1974
+attacktype_1970_1974 <- terrorism1 %>% group_by(attacktype1_txt) %>% summarise(n=n())
+ggplot(aes(x=reorder(attacktype1_txt, n), y=n), data=attacktype_1970_1974) + 
+geom_bar(stat = 'identity') + xlab('Attack Type') + ylab('Number of Attacks') + ggtitle('Global Terrorist Attack Types From 1970 To 1974') + coord_flip() 
+
+#2011-2016
+attacktype_2011_2016 <- terrorism2 %>% group_by(attacktype1_txt) %>% summarise(n=n())
+ggplot(aes(x=reorder(attacktype1_txt, n), y=n), data=attacktype_2011_2016) + 
+geom_bar(stat = 'identity') + xlab('Attack Type') + ylab('Number of Attacks') + ggtitle('Global Terrorist Attack Types From 2011 To 2016') + coord_flip()
 
 ```
+From the above bar chart, we can see that Bombing/Explosion has been the most frequently used method of terrorist attack both during 1970-1974 and 2011-2016. Armed Assault, Assassination, Hostage Taking (kidnapping) and Facility/Infrastructure have also been some of the most frequently used terrorist attack method for both period. 
 
-## Terrorist Attack By Weapon Wordwide, 1970-1974; 2011-2016
-```{r}
-
-```
 
 ## Terrorist Attack Targets in 1970 and 2016
 

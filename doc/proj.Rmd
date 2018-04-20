@@ -27,16 +27,17 @@ library(dplyr)
 library(ggplot2)
 library(ggthemes)
 library(rworldmap)
+library(tidyverse)
 ```
 
 # Graphical Analysis of Data Quality
 
 ```{r}
-terrorism <- read.xlsx("/Users/xiangyu/Documents/GitHub/EDAV_FinalProj/data/raw data/globalterrorismdb_0617dist.xlsx")
+terrorism <- read.xlsx("../data/raw data/globalterrorismdb_0617dist.xlsx")
 terrorism1<-terrorism[terrorism$iyear<=1974,]
-write.csv(terrorism1,"terrorism1.csv")
+#write.csv(terrorism1,"terrorism1.csv")
 terrorism2<-terrorism[terrorism$iyear>=2012,]
-write.csv(terrorism2,"terrorism2.csv")
+#write.csv(terrorism2,"terrorism2.csv")
 ```
 
 
@@ -112,7 +113,8 @@ For the top 10 terrorist attack targets, they require the most homeland security
 
 To compare the total number of terrorist attacks worldwide, we draw the following two heatmaps. 
 ```{r}
-
+#install.packages('rworldmap')
+#library(rworldmap)
 a <- rle(sort(terrorism1$country_txt))
 b <- data.frame(country_txt=a$values, number_of_torrorism_attacks_from_1970_to_1974 = a$lengths)
 
@@ -122,7 +124,7 @@ gtdMap <- joinCountryData2Map( b,
 
 #mapDevice('x11')
 mapCountryData( gtdMap, 
-                nameColumnToPlot='number_of_torrorism_attacks_from_1970_to_1974', 
+                nameColumnToPlot='number_of_torrorism_attacks_from_1970_to_1974',
                 catMethod='fixedWidth', 
                 numCats=100 )
 
@@ -176,10 +178,15 @@ The most dangeours cities are very different in these two periods. During 1970-1
 During 2012-2016, the most dangerous cities are in Iraq, Pakistan, Somalia, Afghanistan, Libya and Yemen. Baghdad was the most dangerous city in 2012-2016, with approximately 4000 terrorist attacks in all. In addition, the total number of attacks increased rapidly, which may be caused by wars and other political issues.
 
 ## Terrorist Attacks distribution by Region and Year 1970-1974 & 2012-2016
+
 We also feel curious about the distribution worldwide by region in each year of both of the time ranges,'1970-1974'and'2012-2016'. On the basis of this series of barcharts, we can know more about the questions like: 'if the terrorist attack distribution of each year inside each time range is similar with each other?' or 'if there is any major differences between the 2 time ranges in terrorrist attacks distribution by region?'
 To solve these problems, we built up the barcharts below. 
+```{r}
+terrorism1970 <- read.csv('../data/terrorism1.csv', stringsAsFactors = F)
+terrorism2012 <- read.csv('../data/terrorism2.csv', stringsAsFactors = F)
+```
 ```{r fig.height=7, fig.width=10}
-library(tidyverse)
+#library(tidyverse)
 combine <- subset(terrorism, iyear<=1974 | iyear>=2012)
 by_year <- combine %>% group_by(iyear,region_txt) %>% 
   summarise(n=n())
@@ -227,12 +234,10 @@ pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Region and Year 2012-2016') 
 ```
 The pie charts above show that coampared with 40 years ago, the target regions of terrorist attacks became more diverse, and the areas involved are more extensive.
+
 ## Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 1970-1974
+
 On the ground of the analysis above, we want ot pay more attention to 2 major regions full of collisions during the past years, which are Middle East & North Africa and North America. Firstly we want to compare the numbers of attacks of the 2 regions in 1970-1974.
-```{r}
-terrorism1970 <- read.csv('../data/terrorism1.csv', stringsAsFactors = F)
-terrorism2012 <- read.csv('../data/terrorism2.csv', stringsAsFactors = F)
-```
 ```{r fig.height=4, fig.width=11}
 NA_MENA <- subset(terrorism1970, region_txt == "North America" | region_txt == "Middle East & North Africa")
 n_NAMENA <- NA_MENA %>% group_by(region_txt, iyear) %>% 
@@ -245,6 +250,7 @@ ggplot(n_NAMENA, aes(x = iyear, y = n, fill = region_txt)) +
 ggtitle("Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 1970-1974")
 ```
 ## Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 2012-2016
+
 And this is the comparison during the period of 2012-2016.
 ```{r fig.height=4, fig.width=11}
 NA_MENA <- subset(terrorism2012, region_txt == "North America" | region_txt == "Middle East & North Africa")
@@ -260,12 +266,13 @@ ggtitle("Comparison between Terrorist Attack numbers in Middle East & North Afri
 The contrast is corrsponding to the conclusion we got in the last part.
 
 ## Types of Terrorist Attacks in North America and Middle East & North Africa by Year 1970-1974
+
 Now that we know the distribution of attack numbers among years, we want to know more details about these terrorist activities. So the barchart below will show us the contribution of different attack types in a certain year and a certain region.
 ```{r}
-library(ggplot2)
-library(dplyr)
+#library(ggplot2)
+#library(dplyr)
 #install.packages('ggthemes')
-library(ggthemes)
+#library(ggthemes)
 NorthAmerica <- terrorism1970[terrorism1970$region_txt=='North America', ]
 NorthAmerica_type <- NorthAmerica %>% group_by(attacktype1_txt, iyear) %>% 
   summarise(n=n())
@@ -279,7 +286,9 @@ ggplot(aes(x = iyear, y = n, fill = attacktype1_txt), data = MENA_type) + geom_b
 ggtitle("Terrorist Attacks in Middle East & North Africa by Year 1970-1974")
 ```
 For North America in 1970s, explosion occupied a large proportion of all of the attack types, and there are also lots of infrastructure attacks. On the other hand, for Middle East & North Africa in 1970s, explosion is also a major type of attacks, but other main methods of attacks are armed assault, kidnapping and Hijacking, 
+
 ## Types of Terrorist Attacks in North America and Middle East & North Africa by Year 2012-2016
+
 ```{r}
 NorthAmerica <- terrorism2012[terrorism2012$region_txt=='North America', ]
 NorthAmerica_type <- NorthAmerica %>% group_by(attacktype1_txt, iyear) %>% 
@@ -296,6 +305,7 @@ ggtitle("Terrorist Attacks in Middle East & North Africa by Year 2012-2016")
 In comparison with 40 years ago, for North America, the percentage of explosion decreased, but infrastructure attack became the most major attack type. However, for Middle East & North Africa, the distribution has not changed a lot, and the quantity of explosion is overwelmingly large. 
 
 ## Comparison of Terrorist Attacks Distribution by Country in North America& Middle East & North Africa and Year 1970-1974&2012-2016
+
 At present, we combine the 2 regions together to explore the contribution of each country in the 2 regions.
 ```{r fig.height=7, fig.width=12}
 NA_MENA <- subset(terrorism1970, region_txt == "North America" | region_txt == "Middle East & North Africa")
@@ -319,6 +329,7 @@ pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
 It is self-evident that Iraq replaced the status of America to become the most dangerous country amoung North America& Middle East & North Africa. This probabily because of the influence of the Iraq war, and we can induce that most of risks are transferred to Middle East from United States.
 
 ## Comparison of Terrorist Attacks Distribution by Country in North America and Year 1970-1974 & 2012-2016
+
 On the basis of this, we want to concentrate on the 2 regions separately and analyse the relative safety of countries in some region. 
 ```{r fig.height=7, fig.width=12}
 NAmerica <- subset(terrorism1970, region_txt == "North America")
@@ -341,6 +352,7 @@ pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
 According to the pie charts, we found that although United States is still the most major attack target in North America, but the risks of Mexico and Canada increased evidently compared with 40 years ago. But all in all, Canada is still the safest country in North America. 
 
 ## Comparison of Terrorist Attacks Distribution by Country in Middle East & North Africa and Year 1970-1974 & 2012-2016
+
 ```{r fig.height=7, fig.width=12}
 NMANA <- subset(terrorism1970, region_txt == "Middle East & North Africa")
 n_MANA <- NMANA %>% group_by(country_txt) %>% 

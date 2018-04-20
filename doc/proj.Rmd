@@ -259,7 +259,7 @@ ggtitle("Comparison between Terrorist Attack numbers in Middle East & North Afri
 ```
 The contrast is corrsponding to the conclusion we got in the last part.
 
-##Types of Terrorist Attacks in North America and Middle East & North Africa by Year 1970-1974
+## Types of Terrorist Attacks in North America and Middle East & North Africa by Year 1970-1974
 Now that we know the distribution of attack numbers among years, we want to know more details about these terrorist activities. So the barchart below will show us the contribution of different attack types in a certain year and a certain region.
 ```{r}
 library(ggplot2)
@@ -279,7 +279,7 @@ ggplot(aes(x = iyear, y = n, fill = attacktype1_txt), data = MENA_type) + geom_b
 ggtitle("Terrorist Attacks in Middle East & North Africa by Year 1970-1974")
 ```
 For North America in 1970s, explosion occupied a large proportion of all of the attack types, and there are also lots of infrastructure attacks. On the other hand, for Middle East & North Africa in 1970s, explosion is also a major type of attacks, but other main methods of attacks are armed assault, kidnapping and Hijacking, 
-##Types of Terrorist Attacks in North America and Middle East & North Africa by Year 2012-2016
+## Types of Terrorist Attacks in North America and Middle East & North Africa by Year 2012-2016
 ```{r}
 NorthAmerica <- terrorism2012[terrorism2012$region_txt=='North America', ]
 NorthAmerica_type <- NorthAmerica %>% group_by(attacktype1_txt, iyear) %>% 
@@ -295,7 +295,7 @@ ggtitle("Terrorist Attacks in Middle East & North Africa by Year 2012-2016")
 ```
 In comparison with 40 years ago, for North America, the percentage of explosion decreased, but infrastructure attack became the most major attack type. However, for Middle East & North Africa, the distribution has not changed a lot, and the quantity of explosion is overwelmingly large. 
 
-##Comparison of Terrorist Attacks Distribution by Country in North America& Middle East & North Africa and Year 1970-1974&2012-2016
+## Comparison of Terrorist Attacks Distribution by Country in North America& Middle East & North Africa and Year 1970-1974&2012-2016
 At present, we combine the 2 regions together to explore the contribution of each country in the 2 regions.
 ```{r fig.height=7, fig.width=12}
 NA_MENA <- subset(terrorism1970, region_txt == "North America" | region_txt == "Middle East & North Africa")
@@ -318,7 +318,7 @@ pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
 ```
 It is self-evident that Iraq replaced the status of America to become the most dangerous country amoung North America& Middle East & North Africa. This probabily because of the influence of the Iraq war, and we can induce that most of risks are transferred to Middle East from United States.
 
-##Comparison of Terrorist Attacks Distribution by Country in North America and Year 1970-1974 & 2012-2016
+## Comparison of Terrorist Attacks Distribution by Country in North America and Year 1970-1974 & 2012-2016
 On the basis of this, we want to concentrate on the 2 regions separately and analyse the relative safety of countries in some region. 
 ```{r fig.height=7, fig.width=12}
 NAmerica <- subset(terrorism1970, region_txt == "North America")

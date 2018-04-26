@@ -27,8 +27,8 @@ Terrorist attack is a major issue around the globe not only in the 21st century,
 
 Team members' contribution description: 
 - Huijun Cui: Data quality analysis, Exploratory data analysis, Interactive
-- Xiangyu Liu: Exploratory data analysis, Interactive
-- Xiaohan Yi: Exploratory data analysis, Executive summary, Interactive
+- Xiangyu Liu: Description of data, Exploratory data analysis, Interactive, Conclusion
+- Xiaohan Yi: Introduction, Exploratory data analysis, Executive summary, Interactive
 
 
 # Description of Data

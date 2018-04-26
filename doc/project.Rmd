@@ -23,6 +23,13 @@ library(extracat)
 
 # Introduction (including choice of data, questions), Team description
 
+Terrorist attack is a major issue around the globe not only in the 21st century, but in the past decades as well. We want to study the difference between terrorist attacks pattern in the recent five years compared with those occured in the 1970s. We want to explore what are changed and why these changes happen. The data we are using is the Global Terrorism Database (GTD) from http://start.umd.edu/gtd/. 
+
+Team members' contribution description: 
+Huijun Cui: Data quality analysis, Exploratory data analysis, Interactive
+Xiangyu Liu: Exploratory data analysis, Interactive
+Xiaohan Yi: Exploratory data analysis, Executive summary, Interactive
+
 
 # Description of Data
 

@@ -469,22 +469,22 @@ This project provides an analysis and evaluation of global terrorist attack duri
 The project draws attention to the fact that although the trends are different between these two periods, there has been a noticeable increase on terrorist attacks number during the recent five years compared with the 70s (Fig.1). The maximum number of terrorist attacks between 2012 
 and 2016 is approximately 17000, which is almost 27 times of the maximum number between 1970 to 1974.
 
-![fig1](./doc/fig/fig1.png)
+![fig1](../fig/fig1.png)
 
 
 We also notice that among these terrorist attacks, Bombing/Explosion has become the most common tacit during both time periods (Fig.2). 
 
-![fig2](./doc/fig/fig2.png)
+![fig2](../fig/fig2.png)
 
 
 What catches our eyes is that in the 70s, the main target of attacks was Business, while in the 2010s, Private Citizens & Property has become the main objective (Fig.3). This reflects that in the 70s, terrorist attacks were mainly targeted on plundering wealth, especially from department stores, banks, hotels and supermarkets (Citation: https://qz.com/558597/charted-terror-attacks-in-western-europe-from-the-1970s-to-now/). While in 2010s, terrorist attacks become more and more plebification, with lots of innocent people being killed. If the terrorist attacks in the 70s more or less had a taste of robbing the rich to assist the poor, then the attacks in the 2010s have completely degenerated into the tools of game playing between different parties. 
 
-![fig3](./doc/fig/fig3.png)
+![fig3](../fig/fig3.png)
 
 
 The region that have been attacked the most changed from Western Europe to Middle East & North Africa (Fig.4). Further investigation shows that terrorist attacks in Western Europe in the 70s were mainly extremist political groups organized bombings in Western European countries, which were more likely to be a local phenomenon (Citation: https://www.tandfonline.com/doi/full/10.1080/09546550902950308?src=recsys&). However, nowadays, the terrorist attacks in Western Europe are more or less related to Islamist extremists. The increasing number of terrorist attacks in the Middle East region in the past few years coincides with the unstable political situation nowadays in the Middle East region, especially after the Iraq War in 2003. Countries like Afghanistan and Pakistan are also the focus of terrorists these days. 
 
-![fig4](./doc/fig/fig4.png)
+![fig4](../fig/fig4.png)
 
 
 Our analysis shows that there have been great changes in the world terrorist attacks pattern between 1970-1974 and 2012-2016. Although Western Europe and North America were two of the regions with most attacks in the 70s, compared with 40 years ago, these two areas become much safer due to political and societal stabilization. Middle East & North Africa has now become the most dangerous area around the world, with a main attack tacit of Bombing and Explosion. 

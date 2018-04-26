@@ -54,21 +54,35 @@ terrorism2<-terrorism[terrorism$iyear>=2012,]
 
 ## discover what's in the data file that was exported
 ```{r}
+head(terrorism)
+nrow(terrorism)
+```
+The imported dataset contains information about terrorist attacks around the world in different fields.From the table above, we can search for the occurance time, occurance location, attack type, attack target and other significant information of terrorist incidents. All in all, it has over 170,000 records (number of terrorist incidents) with 135 kinds of variabes. 
+The original dataset has a time range from 1970 to 2015, but in our project we make 2 subsets from the dataset -- one period is from 1970 to 1974, another one is from 2012 to 2016.  Because the whole dataset is too large and complex, we cannot get satisfactory results if we are lack of orientation. So eventually we decided to select these two periods as samples and comparison groups to conduct our research. After sebsetting, we have 68,366 records now. 
 
-## choose variables
-
+```{r}
+combine <- subset(terrorism, iyear<=1974 | iyear>=2012)
+nrow(combine)
+terrorism_ <- combine[,c("iyear","imonth", "iday", "country_txt", "region_txt", "provstate", "city", "latitude", "longitude", "attacktype1_txt", "targtype1_txt")]
 ```
 
 ## imputations for NULL values 
-```{r}
-
+```{r fig.height=10, fig.width=20}
+library(extracat)
+visna(combine, sort = "b")
+visna(terrorism_, sort = "b")
 ```
-
+The first picture is based on the subdataset that we selected from the two time period we mentioned above, which contains all kinds of variables in the original dataset. This graph discribes the condition of missing values. we can conclude that actually the datasets have lots of missing values, but they do not have a unbiased distribution, which means some categotries of variables are full of missing values, but conversely, another parts of categories do not have any missing values. 
+In the second graph, we pick up some of the variables we like to use in our project, and make another missing value discription. We find that in the domains that we feel interested in, the dataset is satisfactory and complete, and we do not need to worry about the biase from missing values. 
 
 ## Outlier Analysis and Treatment
 ```{r}
-
+boxplot(imonth ~ iyear, data=terrorism1, main="Quantity of Terrorist Incidents in each Month across Years 1970-1974")  
+boxplot(iday ~ imonth, data=terrorism1, main="Quantity of Terrorist Incidents in each Day across Months 2012-2016") 
+boxplot(imonth ~ iyear, data=terrorism2, main="Quantity of Terrorist Incidents in each Month across Years 1970-1974")  
+boxplot(iday ~ imonth, data=terrorism2, main="Quantity of Terrorist Incidents in each Day across Months 2012-2016") 
 ```
+We conclude that we don't have outliers according to the boxplots. In each month, terrorist attacks occured averagely, and in each year of the period we sampled, terrorist attacks also occured almost averagely. 
 
 # Main Analysis (focus on quality of EDA choices / techniques)
 
@@ -132,10 +146,10 @@ attacktype_1970_1974 <- terrorism1 %>% group_by(attacktype1_txt) %>% summarise(n
 p1<-ggplot(aes(x=reorder(attacktype1_txt, n), y=n), data=attacktype_1970_1974) + 
 geom_bar(stat = 'identity') + xlab('Attack Type') + ylab('Number of Attacks') + ggtitle('Global Terrorist Attack Types From 1970 To 1974') + coord_flip() 
 
-#2011-2016
+#2012-2016
 attacktype_2012_2016 <- terrorism2 %>% group_by(attacktype1_txt) %>% summarise(n=n())
 p2<-ggplot(aes(x=reorder(attacktype1_txt, n), y=n), data=attacktype_2012_2016) + 
-geom_bar(stat = 'identity') + xlab('Attack Type') + ylab('Number of Attacks') + ggtitle('Global Terrorist Attack Types From 2011 To 2016') + coord_flip()
+geom_bar(stat = 'identity') + xlab('Attack Type') + ylab('Number of Attacks') + ggtitle('Global Terrorist Attack Types From 2012 To 2016') + coord_flip()
 
 grid.arrange(p1, p2, nrow = 2)
 ```
@@ -205,7 +219,7 @@ The most dangeours countries are very different in these two periods. During 197
 During 2012-2016, the most dangerous countries are in Iraq, Pakistan, Somalia, Afghanistan, Libya and Yemen. Baghdad was the most dangerous city in 2012-2016, with approximately 4000 terrorist attacks in all. In addition, the total number of attacks increased rapidly, which may be caused by wars and other political issues.
 
 
-## Which regions were the most dangerous in  1970-1974 and 2011-2016
+## Which regions were the most dangerous in  1970-1974 and 2012-2016
 
 Since we have already explored terrorist attack methods and targets in previous analyzation, we also want to know which regions have been targetted the most. 
 ```{r}
@@ -265,18 +279,23 @@ Simultaneously, we plotted pie charts to compare the contribution of each region
 ```{r}
 NAmericadist <- terrorism1 %>% group_by(region_txt) %>% 
   summarise(n=n())
+rgb.palette <- colorRampPalette(c(rgb(230,247,255,max=255),rgb(35,179,225,max=255)),space = "rgb")
 
 bp<- ggplot(NAmericadist, aes(x="", y=n, fill=region_txt))+
-geom_bar(width = 1, stat = "identity")
+geom_bar(width = 1, stat = "identity") + 
+  scale_fill_manual(values=rgb.palette(11)) 
 pie <- bp + coord_polar("y", start=0)
-pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
-  axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Region and Year 1970-1974') 
+pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),axis.title.y = element_blank()) +
+ggtitle('Terrorist Attacks Distribution by Region and Year 1970-1974') 
 
+ramp <- colorRamp(c("white", "red"))  
+red <- rgb( ramp(seq(0, 1, length = 12)), max = 255)
 MENAdist <- terrorism2 %>% group_by(region_txt) %>% 
   summarise(n=n())
-bp<- ggplot(MENAdist, aes(x="", y=n, fill=region_txt))+
-geom_bar(width = 1, stat = "identity")
-pie <- bp + coord_polar("y", start=0)
+bp2 <- ggplot(MENAdist, aes(x="", y=n, fill=region_txt))+
+geom_bar(width = 1, stat = "identity") +
+  scale_fill_manual(values=red) 
+pie <- bp2 + coord_polar("y", start=0)
 pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Region and Year 2012-2016') 
 ```
@@ -289,11 +308,13 @@ On the ground of the analysis above, we want ot pay more attention to 2 major re
 NA_MENA <- subset(terrorism1, region_txt == "North America" | region_txt == "Middle East & North Africa")
 n_NAMENA <- NA_MENA %>% group_by(region_txt, iyear) %>% 
   summarise(n=n())
+cbPalette2 <- c("#999999", "#E69F00")
 ggplot(n_NAMENA, aes(x = iyear, y = n, fill = region_txt)) +
   geom_col() +
   xlab('Year') +
   facet_wrap(~ region_txt) +
   theme(legend.position = "none") +
+  scale_fill_manual(values=cbPalette2) +
 ggtitle("Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 1970-1974")
 ```
 
@@ -302,11 +323,13 @@ And this is the comparison during the period of 2012-2016.
 NA_MENA <- subset(terrorism2, region_txt == "North America" | region_txt == "Middle East & North Africa")
 n_NAMENA <- NA_MENA %>% group_by(region_txt, iyear) %>% 
   summarise(n=n())
+cbPalette2 <- c("#999999", "#E69F00")
 ggplot(n_NAMENA, aes(x = iyear, y = n, fill = region_txt)) +
   geom_col() +
   xlab('Year') +
   facet_wrap(~ region_txt) +
   theme(legend.position = "none") +
+  scale_fill_manual(values=cbPalette2) +
 ggtitle("Comparison between Terrorist Attack numbers in Middle East & North Africa and North America by Year 2012-2016")
 ```
 The contrast is corrsponding to the conclusion we got in the last part.
@@ -314,35 +337,39 @@ The contrast is corrsponding to the conclusion we got in the last part.
 ## Types of Terrorist Attacks in North America and Middle East & North Africa by Year 1970-1974
 
 Now that we know the distribution of attack numbers among years, we want to know more details about these terrorist activities. So the barchart below will show us the contribution of different attack types in a certain year and a certain region.
-```{r}
-
+```{r fig.height=7, fig.width=12}
+cbPalette9 <- c("#000000", "#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 NorthAmerica <- terrorism1[terrorism1$region_txt=='North America', ]
 NorthAmerica_type <- NorthAmerica %>% group_by(attacktype1_txt, iyear) %>% 
   summarise(n=n())
 ggplot(aes(x = iyear, y = n, fill = attacktype1_txt), data = NorthAmerica_type) + geom_bar(stat = 'identity') +
+scale_fill_manual(values=cbPalette9) +
 ggtitle("Terrorist Attacks in North America by Year 1970-1974")
 
 MENA <- terrorism1[terrorism1$region_txt=='Middle East & North Africa', ]
 MENA_type <- MENA %>% group_by(attacktype1_txt, iyear) %>% 
   summarise(n=n())
 ggplot(aes(x = iyear, y = n, fill = attacktype1_txt), data = MENA_type) + geom_bar(stat = 'identity') +
+scale_fill_manual(values=cbPalette9) +  
 ggtitle("Terrorist Attacks in Middle East & North Africa by Year 1970-1974")
 ```
 
 For North America in 1970s, explosion occupied a large proportion of all of the attack types, and there are also lots of infrastructure attacks. On the other hand, for Middle East & North Africa in 1970s, explosion is also a major type of attacks, but other main methods of attacks are armed assault, kidnapping and Hijacking, 
 
 ## Types of Terrorist Attacks in North America and Middle East & North Africa by Year 2012-2016
-```{r}
+```{r fig.height=7, fig.width=12}
 NorthAmerica <- terrorism2[terrorism2$region_txt=='North America', ]
 NorthAmerica_type <- NorthAmerica %>% group_by(attacktype1_txt, iyear) %>% 
   summarise(n=n())
 ggplot(aes(x = iyear, y = n, fill = attacktype1_txt), data = NorthAmerica_type) + geom_bar(stat = 'identity') +
+scale_fill_manual(values=cbPalette9) +  
 ggtitle("Terrorist Attacks in North America by Year 1970-1974")
 
 MENA <- terrorism2[terrorism2$region_txt=='Middle East & North Africa', ]
 MENA_type <- MENA %>% group_by(attacktype1_txt, iyear) %>% 
   summarise(n=n())
 ggplot(aes(x = iyear, y = n, fill = attacktype1_txt), data = MENA_type) + geom_bar(stat = 'identity') +
+scale_fill_manual(values=cbPalette9) +  
 ggtitle("Terrorist Attacks in Middle East & North Africa by Year 2012-2016")
 ```
 
@@ -352,20 +379,27 @@ In comparison with 40 years ago, for North America, the percentage of explosion 
 
 At present, we combine the 2 regions together to explore the contribution of each country in the 2 regions.
 ```{r fig.height=7, fig.width=12}
+#install.packages("viridis")
+library(viridis)
 NA_MENA <- subset(terrorism1, region_txt == "North America" | region_txt == "Middle East & North Africa")
 n_NAMENA <- NA_MENA %>% group_by(country_txt) %>% 
   summarise(n=n())
-bp<- ggplot(n_NAMENA, aes(x="", y=n, fill=country_txt))+
-geom_bar(width = 1, stat = "identity")
+ramp <- colorRamp(c("purple",'mediumpurple','white'))  
+color <- rgb( ramp(seq(0, 1, length = 17)), max = 255)
+bp<-ggplot(n_NAMENA, aes(x="", y=n, fill=country_txt))+
+geom_bar(width = 1, stat = "identity") +
+  scale_fill_manual(values=color) 
 pie <- bp + coord_polar("y", start=0)
-pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
-  axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in North America& Middle East & North Africa and Year 1970-1974') 
+pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(), axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in North America& Middle East & North Africa and Year 1970-1974') 
 
 NA_MENA <- subset(terrorism2, region_txt == "North America" | region_txt == "Middle East & North Africa")
 n_NAMENA <- NA_MENA %>% group_by(country_txt) %>% 
   summarise(n=n())
+ramp <- colorRamp(c("black",'grey','white'))  
+color2 <- rgb( ramp(seq(0, 1, length = 22)), max = 255)
 bp<- ggplot(n_NAMENA, aes(x="", y=n, fill=country_txt))+
-geom_bar(width = 1, stat = "identity")
+geom_bar(width = 1, stat = "identity") +
+  scale_fill_manual(values=color2) 
 pie <- bp + coord_polar("y", start=0)
 pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in North America& Middle East & North Africa and Year 2012-2016') 
@@ -380,8 +414,10 @@ On the basis of this, we want to concentrate on the 2 regions separately and ana
 NAmerica <- subset(terrorism1, region_txt == "North America")
 n_NA <- NAmerica %>% group_by(country_txt) %>% 
   summarise(n=n())
+cbPalette3 <- c("#999999", "#56B4E9", "#D55E00")
 bp<- ggplot(n_NA, aes(x="", y=n, fill=country_txt))+
-geom_bar(width = 1, stat = "identity")
+geom_bar(width = 1, stat = "identity")+
+   scale_fill_manual(values=cbPalette3) 
 pie <- bp + coord_polar("y", start=0)
 pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in North America and Year 1970-1974') 
@@ -389,7 +425,8 @@ NAmerica <- subset(terrorism2, region_txt == "North America")
 n_NA <- NAmerica %>% group_by(country_txt) %>% 
   summarise(n=n())
 bp<- ggplot(n_NA, aes(x="", y=n, fill=country_txt))+
-geom_bar(width = 1, stat = "identity")
+geom_bar(width = 1, stat = "identity")+
+   scale_fill_manual(values=cbPalette3) 
 pie <- bp + coord_polar("y", start=0)
 pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in North America and Year 2012-2016') 
@@ -403,8 +440,11 @@ According to the pie charts, we found that although United States is still the m
 NMANA <- subset(terrorism1, region_txt == "Middle East & North Africa")
 n_MANA <- NMANA %>% group_by(country_txt) %>% 
   summarise(n=n())
+ramp <- colorRamp(c("#000000", "#999999", "#009E73", "#F0E442", "#0072B2"))  
+color <- rgb( ramp(seq(0, 1, length = 17)), max = 255)
 bp<- ggplot(n_MANA, aes(x="", y=n, fill=country_txt))+
-geom_bar(width = 1, stat = "identity")
+geom_bar(width = 1, stat = "identity") +
+  scale_fill_manual(values=color) 
 pie <- bp + coord_polar("y", start=0)
 pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in Middle East & North Africa and Year 1970-1974') 
@@ -412,13 +452,13 @@ pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
 NMANA <- subset(terrorism2, region_txt == "Middle East & North Africa")
 n_MANA <- NMANA %>% group_by(country_txt) %>% 
   summarise(n=n())
+color <- rgb( ramp(seq(0, 1, length = 19)), max = 255)
 bp<- ggplot(n_MANA, aes(x="", y=n, fill=country_txt))+
-geom_bar(width = 1, stat = "identity")
+geom_bar(width = 1, stat = "identity") +
+  scale_fill_manual(values=color) 
 pie <- bp + coord_polar("y", start=0)
 pie + theme(axis.text.x=element_blank(), axis.title.x = element_blank(),
   axis.title.y = element_blank()) + ggtitle('Terrorist Attacks Distribution by Country in Middle East & North Africa and Year 2012-2016') 
-
-getwd()
 ```
 
 For countries in Middle East & North Africa, the risks and contradictions in this region became more concentrated, which means, after several wars in this region during the past decades, great changes of security situations have taken place Middle East & North Africa.

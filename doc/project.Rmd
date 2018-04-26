@@ -18,7 +18,7 @@ library(ggthemes)
 library(rworldmap)
 library(tidyverse)
 library(gridExtra)
-
+library(extracat)
 ```
 
 # Introduction (including choice of data, questions), Team description
@@ -52,7 +52,7 @@ terrorism2<-terrorism[terrorism$iyear>=2012,]
 ```
 
 
-## discover what's in the data file that was exported
+## Discover what's in the data file that was exported
 ```{r}
 head(terrorism)
 nrow(terrorism)
@@ -66,9 +66,8 @@ nrow(combine)
 terrorism_ <- combine[,c("iyear","imonth", "iday", "country_txt", "region_txt", "provstate", "city", "latitude", "longitude", "attacktype1_txt", "targtype1_txt")]
 ```
 
-## imputations for NULL values 
+## Imputations for NULL values 
 ```{r fig.height=10, fig.width=20}
-library(extracat)
 visna(combine, sort = "b")
 visna(terrorism_, sort = "b")
 ```

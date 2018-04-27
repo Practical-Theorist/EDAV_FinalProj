@@ -523,20 +523,35 @@ Our analysis shows that there have been great changes in the world terrorist att
 
 
 # Interactive Component 
+
+## Part 1
+
+This the link of our Shiny App: https://ellip123.shinyapps.io/tryyy/
+In thi App, we plotted the relationships between different variables in the dataset, and tried to figure out lots of correlation relationships which we can not try on the traditional R plot. 
+
 ```{r}
 citation(package = "scatterD3")
 ```
 
 In this part we concentrate on the terrorist attack types in the two major regions: North America and Middle East & North Africa corresponding to different countries during different periods. 
 Each value of attack types corresponds to a type of terrorest attack. They are:
+
 attack type number 1: Assassination
+
 attack type number 2: Armed Assault
+
 attack type number 3: Bombing/Explosion
+
 attack type number 4: Hijacking
+
 attack type number 5: Hostage Taking (Barricade Incident)
+
 attack type number 6: Hostage Taking (Kidnapping)
+
 attack type number 7: Facility/Infrastructure Attack
+
 attack type number 8: Unarmed Assault
+
 attack type number 9: Unknown
 
 We use scatter plots to show the corresponding relationships between countries and attack type. In the interactive graphs below, we used differents colors to represent different countries (and also the y axis labels). The typical symbol shapes represent typical attack types. Besides, we take use of the opacity, i.e. points with deeper color means higher value -- the quantity of terrorist events in a certain country and of a certain type.   
@@ -574,6 +589,8 @@ scatterD3(data = MENA, x = attacktype1, y = countryname
 , point_size = 175, point_opacity = 0.1, symbol_var = attacktype1,hover_size = 6, hover_opacity = 1, col_var = countryname, lasso = TRUE)
 ```
 But 40 years later, the whole region became a dangerous region in the world. diverse types of attacks occured in this region, with representative ones like Arm Assault, exlosion, Hostage Taking (Kidnapping), Facility/Infrastructure Attack and etc.
+
+In the future, we want to do more researches in the field of the international safety. 
 
 # Conclusion
 

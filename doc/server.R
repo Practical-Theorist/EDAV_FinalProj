@@ -5,7 +5,7 @@ library(openxlsx)
 function(input, output) {
   #options(shiny.sanitize.errors = TRUE)
   terrorism <- read.xlsx("../data/raw data/globalterrorismdb_0617dist.xlsx")
-  terrorism <- terrorism[,c("iyear","imonth", "iday", "country_txt", "region_txt", "provstate", "city", "latitude", "longitude", "attacktype1_txt", "targtype1_txt",  "natlty1_txt",  "weaptype1_txt", "weapsubtype1_txt")]
+  terrorism <- terrorism[,c("iyear", "country_txt", "region_txt", "city", "latitude", "longitude", "attacktype1_txt", "targtype1_txt", "weaptype1_txt")]
   terrorism1<-terrorism[terrorism$iyear<=1974|terrorism$iyear>=2012,]
  
   
